@@ -1,11 +1,38 @@
 public class Ship
 {
+    private int shipLength = 3;
+    private int boardSize;
     private int posx, pos2, pos3, posy;
     private boolean alive;
     private boolean upDown; //if true, ship is up & down on board; false = left * right
 
+    public Ship(int boardSize)
+    {
+        this.boardSize = boardSize;
+
+        //This strategy allows overlap of ships, which I don't think you want - Liam
+        // initialise instance variables
+        posx = ((int)(Math.random() * (boardSize - shipLength))); //sets the x postition of the ship
+        posy = (int)(Math.random() * boardSize - shipLength); //sets the y position
+        alive = true;
+        int leftRight = ((int)(Math.random() * (2))); //determines if the ship faces up and down or left and right
+        if(leftRight == 0)
+        {
+            upDown = true;
+            pos2 = posy + 1;
+            pos3 = pos2 + 1;
+        }
+        else
+        {
+            upDown = false;
+            pos2 = posx + 1;
+            pos3 = pos2 + 1;
+        }
+    }
+
     public Ship()
     {
+        //This strategy allows overlap of ships, which I don't think you want - Liam
         // initialise instance variables
         posx = ((int)(Math.random() * (4))); //sets the x postition of the ship
         posy = (int)(Math.random() * 4); //sets the y position
