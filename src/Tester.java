@@ -1,8 +1,8 @@
-public class Tester2
+public class Tester
 {
     public static void main(String[] args)
     {
-        Board2 myBoard = new Board2();
+        Board myBoard = new Board();
         myBoard.clearBoard();
     }
 }

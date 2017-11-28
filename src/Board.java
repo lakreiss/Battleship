@@ -1,26 +1,43 @@
 import java.util.*;
-public class Board2
+public class Board
+
+    /*
+    It's really good!
+    I cleaned up your code a bit, you should look over the changes and figure out why I made them and why they work.
+    I changed:
+    - the mechanism you used to make sure the user enters valid input. Your way was broken and now
+    it will be easier to debug. I used recursion, not sure if you've studied that yet, but hopefully
+    it makes sense when you look at the code. it's the method called "getGuess"
+    - added a global final static variable which describes the size of the board. Size is a pretty standard thing
+    to use as a field (global variable), and that way if you ever want to make the board bigger or smaller,
+    you just have to change one line instead of a bunch of lines
+
+
+
+     */
 {
     private String[][] boardView;
     private int[][] gameBoard;
+    private int boardSize;
 
-    Ship2 ship1 = new Ship2();
-    Ship2 ship2 = new Ship2();
-    Ship2 ship3 = new Ship2();
+    Ship ship1 = new Ship();
+    Ship ship = new Ship();
+    Ship ship3 = new Ship();
     Scanner kb = new Scanner(System.in);
-    public Board2()
+    public Board(int boardSize)
     {
+        this.boardSize = boardSize;
         // initialise instance variables
-        boardView = new String[7][7];
-        for(int i = 0; i < boardView.length; i++)
+        boardView = new String[boardSize][boardSize];
+        for(int i = 0; i < boardSize; i++)
         {
-            for(int j = 0; j < boardView[0].length; j++)
+            for(int j = 0; j < boardSize; j++)
                 boardView[i][j] = "_";
         }
-        gameBoard = new int[7][7];
-        for(int i = 0; i < gameBoard.length; i++)
+        gameBoard = new int[boardSize][boardSize];
+        for(int i = 0; i < boardSize; i++)
         {
-            for(int j = 0; j < gameBoard[0].length; j++)
+            for(int j = 0; j < boardSize; j++)
                 gameBoard[i][j] = 0;
         }
     }
@@ -49,17 +66,17 @@ public class Board2
             gameBoard[ship1.getPos2()][ship1.getPosy()] = 1; 
             gameBoard[ship1.getPos3()][ship1.getPosy()] = 1;
         }
-        if(ship2.getUpDown())
+        if(ship.getUpDown())
         {
-            gameBoard[ship2.getPosx()][ship2.getPosy()] = 1; 
-            gameBoard[ship2.getPosx()][ship2.getPos2()] = 1; 
-            gameBoard[ship2.getPosx()][ship2.getPos3()] = 1;
+            gameBoard[ship.getPosx()][ship.getPosy()] = 1;
+            gameBoard[ship.getPosx()][ship.getPos2()] = 1;
+            gameBoard[ship.getPosx()][ship.getPos3()] = 1;
         }
         else
         {
-            gameBoard[ship2.getPosx()][ship2.getPosy()] = 1; 
-            gameBoard[ship2.getPos2()][ship2.getPosy()] = 1; 
-            gameBoard[ship2.getPos3()][ship2.getPosy()] = 1;
+            gameBoard[ship.getPosx()][ship.getPosy()] = 1;
+            gameBoard[ship.getPos2()][ship.getPosy()] = 1;
+            gameBoard[ship.getPos3()][ship.getPosy()] = 1;
         }
         if(ship3.getUpDown())
         {
@@ -77,16 +94,16 @@ public class Board2
 
     private void showBoard()
     {
-        for(int i = 0; i < boardView.length; i++)
+        for(int i = 0; i < boardSize; i++)
         {
             System.out.print(i + "  ");
-            for(int j = 0; j < boardView[0].length; j++)
+            for(int j = 0; j < boardSize; j++)
             {
                 System.out.print(boardView[i][j] + " | ");
             }
             System.out.println();
         }
-        System.out.println("   0   1   2   3   4   5   6");
+        printColumnTitles();
         // for(int i = 0; i < gameBoard.length; i++)
         // {
         // System.out.print(i + "  ");
@@ -97,6 +114,17 @@ public class Board2
         // System.out.println();
         // }
         // System.out.println("   0   1   2   3   4   5   6");
+    }
+
+    /**
+     * equivalent to System.out.println("   0   1   2   3   4   5   6");
+        but it can go to numbers other than 6
+     */
+    private void printColumnTitles() {
+        for (int i = 0; i < boardSize; i++) {
+            System.out.print("   " + i);
+        }
+        System.out.println();
     }
 
     public boolean boardIsClear()
@@ -114,18 +142,11 @@ public class Board2
 
     private void shoot()
     {
-        System.out.print("Enter your row guess 0 to 6: ");
-        int guessx = kb.nextInt();
-        if(guessx < 0 || guessx > 6)
-        {
-            System.out.println("Please guess between 0 and 6!");
-        }
-        System.out.print("Enter your column guess 0 to 6: ");
-        int guessy = kb.nextInt();
-        if(guessy < 0 || guessy > 6)
-        {
-            System.out.println("Please guess between 0 and 6!");
-        }
+        System.out.print("Enter your row guess 0 to " + boardSize + ": ");
+        int guessx = getGuess(0, boardSize);
+        System.out.print("Enter your column guess 0 to " + boardSize + ": ");
+        int guessy = getGuess(0, boardSize);
+
         System.out.println("PEW!");
         if(gameBoard[guessx][guessy] == 1)
         {
@@ -139,8 +160,31 @@ public class Board2
             boardView[guessx][guessy] = "O";
         }
         ship1.isAlive(gameBoard);
-        ship2.isAlive(gameBoard);
+        ship.isAlive(gameBoard);
         ship3.isAlive(gameBoard);
+    }
+
+    /**
+     * min is inclusive, max is exclusive
+     * @param min
+     * @param max
+     * @return
+     */
+    private int getGuess(int min, int max) {
+        Scanner input = new Scanner(kb.nextLine());
+        if (input.hasNextInt()) {
+            int guess = input.nextInt();
+            if (guess < min || guess >= max) {
+                System.out.println("Please guess between 0 and " + boardSize + "!");
+                input.close(); //this is unnecessary but technically saves memory. you can get rid of these .close() if you want
+                return getGuess(min, max);
+            } else {
+                return guess;
+            }
+        }
+        System.out.println("Please guess between 0 and " + boardSize + "!");
+        input.close();
+        return getGuess(min, max);
     }
 
     public void clearBoard()
@@ -155,7 +199,7 @@ public class Board2
                 System.out.println("Ship 1 is alive");
             else
                 System.out.println("Ship 1 is sunk");
-            if(ship2.getAlive())
+            if(ship.getAlive())
                 System.out.println("Ship 2 is alive");
             else
                 System.out.println("Ship 2 is sunk");
@@ -164,7 +208,7 @@ public class Board2
             else
                 System.out.println("Ship 3 is sunk");
             System.out.println("Ship 1 has " + ship1.livesLeft(gameBoard) + " lives left");
-            System.out.println("Ship 2 has " + ship2.livesLeft(gameBoard) + " lives left");
+            System.out.println("Ship 2 has " + ship.livesLeft(gameBoard) + " lives left");
             System.out.println("Ship 3 has " + ship3.livesLeft(gameBoard) + " lives left");
         }
         showBoard();
@@ -172,7 +216,7 @@ public class Board2
             System.out.println("Ship 1 is alive");
         else
             System.out.println("Ship 1 is sunk");
-        if(ship2.getAlive())
+        if(ship.getAlive())
             System.out.println("Ship 2 is alive");
         else
             System.out.println("Ship 2 is sunk");

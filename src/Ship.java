@@ -1,10 +1,10 @@
-public class Ship2
+public class Ship
 {
     private int posx, pos2, pos3, posy;
     private boolean alive;
     private boolean upDown; //if true, ship is up & down on board; false = left * right
 
-    public Ship2()
+    public Ship()
     {
         // initialise instance variables
         posx = ((int)(Math.random() * (4))); //sets the x postition of the ship
