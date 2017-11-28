@@ -27,6 +27,7 @@ public class Board
     private String[][] boardView;
     private int[][] gameBoard;
     private int boardSize;
+    private HashSet<Guess> guesses;
 
     Ship ship1;
     Ship ship2;
@@ -51,6 +52,8 @@ public class Board
             for(int j = 0; j < boardSize; j++)
                 gameBoard[i][j] = 0;
         }
+
+        guesses = new HashSet<Guess>();
     }
 
     public String[][] getBoardView()
@@ -158,21 +161,28 @@ public class Board
         System.out.print("Enter your column guess 0 to " + boardSize + ": ");
         int guessy = getGuess(0, boardSize);
 
-        System.out.println("PEW!");
-        if(gameBoard[guessx][guessy] == 1)
-        {
-            System.out.println("Hit!");
-            gameBoard[guessx][guessy] = gameBoard[guessx][guessy] - 1;
-            boardView[guessx][guessy] = "X";
+        Guess guess = new Guess(guessx, guessy, boardSize);
+        if (guesses.contains(guess)) {
+            System.out.println("You've already guessed that index. Please try again.");
+            shoot();
+        } else {
+            guesses.add(guess);
+            System.out.println("PEW!");
+            if(gameBoard[guessx][guessy] == 1)
+            {
+                System.out.println("Hit!");
+                gameBoard[guessx][guessy] = gameBoard[guessx][guessy] - 1;
+                boardView[guessx][guessy] = "X";
+            }
+            else
+            {
+                System.out.println("Miss!");
+                boardView[guessx][guessy] = "O";
+            }
+            ship1.isAlive(gameBoard);
+            ship2.isAlive(gameBoard);
+            ship3.isAlive(gameBoard);
         }
-        else
-        {
-            System.out.println("Miss!");
-            boardView[guessx][guessy] = "O";
-        }
-        ship1.isAlive(gameBoard);
-        ship2.isAlive(gameBoard);
-        ship3.isAlive(gameBoard);
     }
 
     /**
@@ -206,18 +216,10 @@ public class Board
             showBoard();
             shoot();
             System.out.println();
-            if(ship1.getAlive())
-                System.out.println("Ship 1 is alive");
-            else
-                System.out.println("Ship 1 is sunk");
-            if(ship2.getAlive())
-                System.out.println("Ship 2 is alive");
-            else
-                System.out.println("Ship 2 is sunk");
-            if(ship3.getAlive())
-                System.out.println("Ship 3 is alive");
-            else
-                System.out.println("Ship 3 is sunk");
+            System.out.println("Ship 1 is " + ship1.getState());
+            System.out.println("Ship 2 is " + ship2.getState());
+            System.out.println("Ship 3 is " + ship3.getState());
+
             System.out.println("Ship 1 has " + ship1.livesLeft(gameBoard) + " lives left");
             System.out.println("Ship 2 has " + ship2.livesLeft(gameBoard) + " lives left");
             System.out.println("Ship 3 has " + ship3.livesLeft(gameBoard) + " lives left");

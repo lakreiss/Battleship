@@ -1,35 +1,33 @@
+
 public class Ship
 {
     private int shipLength = 3;
-    private int boardSize;
     private int posx, pos2, pos3, posy;
     private boolean alive;
     private boolean upDown; //if true, ship is up & down on board; false = left * right
 
     public Ship(int boardSize)
     {
-        this.boardSize = boardSize;
-
         //This strategy allows overlap of ships, which I don't think you want - Liam
         // initialise instance variables
-        posx = ((int)(Math.random() * (boardSize - shipLength))); //sets the x postition of the ship
-        posy = (int)(Math.random() * boardSize - shipLength); //sets the y position
-        alive = true;
         int leftRight = ((int)(Math.random() * (2))); //determines if the ship faces up and down or left and right
-        if(leftRight == 0)
-        {
-            upDown = true;
+        upDown = (leftRight == 0);
+        if (upDown) {
+            posx = (int)(Math.random() * (boardSize)); //sets the x postition of the ship
+            posy = (int)(Math.random() * (boardSize - shipLength)); //sets the y position
             pos2 = posy + 1;
-            pos3 = pos2 + 1;
-        }
-        else
-        {
-            upDown = false;
+        } else {
+            posx = (int)(Math.random() * (boardSize - shipLength)); //sets the x postition of the ship
+            posy = (int)(Math.random() * (boardSize)); //sets the y position
             pos2 = posx + 1;
-            pos3 = pos2 + 1;
         }
+        pos3 = pos2 + 1;
+
+        alive = true;
     }
 
+    //I think the ships should know how big the board is so they know where to position themselves.
+    //another way to approach the problem would be to create Ship objects which already had set coordinates
     public Ship()
     {
         //This strategy allows overlap of ships, which I don't think you want - Liam
@@ -117,17 +115,6 @@ public class Ship
                 count++;
             if(board[posx][pos3] == 1)
                 count++;
-            // for(int i = 0; i < board.length; i++)
-            // {
-            // for(int j = 0; j < board[0].length; j++)
-            // {
-            // if(i == posx && j == posy || i == pos2 && j == posy || i == pos3 && j == posy)
-            // {
-            // if(board[i][j] == 1)
-            // count++;
-            // }
-            // }
-            // }
         }
         else
         {
@@ -137,22 +124,12 @@ public class Ship
                 count++;
             if(board[pos3][posy] == 1)
                 count++;
-            // for(int i = 0; i < board.length; i++)
-            // {
-            // for(int j = 0; j < board[0].length; j++)
-            // {
-            // if(i == posx && j == posy || i == posx && j == pos2 || i == posx && j == pos3)
-            // {
-            // if(board[i][j] == 1)
-            // count++;
-            // }
-            // }
-            // }
         }
         if(count == 0)
             alive = false;
     }
 
+    //you never call this method
     public void changePos()
     {
         if(upDown == true)
@@ -168,5 +145,12 @@ public class Ship
             pos3 = pos2 + 1;
         }
 
+    }
+
+    public String getState() {
+        if (alive) {
+            return "alive";
+        }
+        return "sunk";
     }
 }
