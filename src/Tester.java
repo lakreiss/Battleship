@@ -7,7 +7,7 @@ public class Tester
         Player player1 = new Player(7);
         Player player2 = new Player(7);
 
-        while(!(player1.board.boardIsClear()) || !(player2.board.boardIsClear()))
+        while(!(player1.board.boardIsClear()) && !(player2.board.boardIsClear()))
         {
             System.out.println("It is player 1's turn!!");
             player1.shoot();
