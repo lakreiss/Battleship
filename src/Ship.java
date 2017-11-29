@@ -1,4 +1,3 @@
-
 public class Ship
 {
     private int shipLength = 3;
@@ -12,11 +11,14 @@ public class Ship
         // initialise instance variables
         int leftRight = ((int)(Math.random() * (2))); //determines if the ship faces up and down or left and right
         upDown = (leftRight == 0);
-        if (upDown) {
+        if (upDown) 
+        {
             posx = (int)(Math.random() * (boardSize)); //sets the x postition of the ship
             posy = (int)(Math.random() * (boardSize - shipLength)); //sets the y position
             pos2 = posy + 1;
-        } else {
+        } 
+        else 
+        {
             posx = (int)(Math.random() * (boardSize - shipLength)); //sets the x postition of the ship
             posy = (int)(Math.random() * (boardSize)); //sets the y position
             pos2 = posx + 1;
@@ -26,29 +28,6 @@ public class Ship
         alive = true;
     }
 
-    //I think the ships should know how big the board is so they know where to position themselves.
-    //another way to approach the problem would be to create Ship objects which already had set coordinates
-    public Ship()
-    {
-        //This strategy allows overlap of ships, which I don't think you want - Liam
-        // initialise instance variables
-        posx = ((int)(Math.random() * (4))); //sets the x postition of the ship
-        posy = (int)(Math.random() * 4); //sets the y position
-        alive = true;
-        int leftRight = ((int)(Math.random() * (2))); //determines if the ship faces up and down or left and right
-        if(leftRight == 0)
-        {
-            upDown = true;
-            pos2 = posy + 1;
-            pos3 = pos2 + 1;
-        }
-        else
-        {
-            upDown = false;
-            pos2 = posx + 1;
-            pos3 = pos2 + 1;
-        }
-    }
 
     public int getPosx()
     {
@@ -148,7 +127,8 @@ public class Ship
     }
 
     public String getState() {
-        if (alive) {
+        if (alive) 
+        {
             return "alive";
         }
         return "sunk";

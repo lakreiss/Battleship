@@ -1,28 +1,26 @@
 import java.util.*;
 public class Board
 
-    /*
-    It's really good!
-    I cleaned up your code a bit, you should look over the changes and figure out why I made them and why they work.
-    I changed:
-    - the mechanism you used to make sure the user enters valid input. Your way was broken and now
-    it will be easier to debug. I used recursion, not sure if you've studied that yet, but hopefully
-    it makes sense when you look at the code. it's the method called "getGuess"
-    - added a global static variable which describes the size of the board. Size is a pretty standard thing
-    to use as a field (global variable), and that way if you ever want to make the board bigger or smaller,
-    you just have to change one line instead of a bunch of lines
-    -renamed your second ship to ship2 because I don't know why it used to just be called 'ship'
-
-    Other things that would be good to change:
-    -make sure ships don't overlap
-    -allow for different sized ships, and different numbers of ships
-    -the biggest thing for potentially making bots is figuring out the overall design a little better.
-    I would suggest making a class that runs the game, and have that class contain two Player objects
-    (you'd have to make a player class), and have each player object contain their own board. I think
-    that best simulates a real game of battleship, and it would allow you to make ComputerPlayer as
-    a subclass of Player
-
-     */
+/*
+It's really good!
+I cleaned up your code a bit, you should look over the changes and figure out why I made them and why they work.
+I changed:
+- the mechanism you used to make sure the user enters valid input. Your way was broken and now
+it will be easier to debug. I used recursion, not sure if you've studied that yet, but hopefully
+it makes sense when you look at the code. it's the method called "getGuess"
+- added a global static variable which describes the size of the board. Size is a pretty standard thing
+to use as a field (global variable), and that way if you ever want to make the board bigger or smaller,
+you just have to change one line instead of a bunch of lines
+-renamed your second ship to ship2 because I don't know why it used to just be called 'ship'
+Other things that would be good to change:
+-make sure ships don't overlap
+-allow for different sized ships, and different numbers of ships
+-the biggest thing for potentially making bots is figuring out the overall design a little better.
+I would suggest making a class that runs the game, and have that class contain two Player objects
+(you'd have to make a player class), and have each player object contain their own board. I think
+that best simulates a real game of battleship, and it would allow you to make ComputerPlayer as
+a subclass of Player
+ */
 {
     private String[][] boardView;
     private int[][] gameBoard;
@@ -106,7 +104,7 @@ public class Board
         }
     }
 
-    private void showBoard()
+    public void showBoard()
     {
         for(int i = 0; i < boardSize; i++)
         {
@@ -132,7 +130,7 @@ public class Board
 
     /**
      * equivalent to System.out.println("   0   1   2   3   4   5   6");
-        but it can go to numbers other than 6
+    but it can go to numbers other than 6
      */
     private void printColumnTitles() {
         for (int i = 0; i < boardSize; i++) {
@@ -154,18 +152,21 @@ public class Board
         return true;
     }
 
-    private void shoot()
+    public void shoot()
     {
-        System.out.print("Enter your row guess 0 to " + boardSize + ": ");
+        showBoard();
+        System.out.print("Enter your row guess 0 to " + (boardSize - 1) + ": ");
         int guessx = getGuess(0, boardSize);
-        System.out.print("Enter your column guess 0 to " + boardSize + ": ");
+        System.out.print("Enter your column guess 0 to " + (boardSize - 1) + ": ");
         int guessy = getGuess(0, boardSize);
 
         Guess guess = new Guess(guessx, guessy, boardSize);
         if (guesses.contains(guess)) {
             System.out.println("You've already guessed that index. Please try again.");
             shoot();
-        } else {
+        } 
+        else 
+        {
             guesses.add(guess);
             System.out.println("PEW!");
             if(gameBoard[guessx][guessy] == 1)
@@ -183,6 +184,15 @@ public class Board
             ship2.isAlive(gameBoard);
             ship3.isAlive(gameBoard);
         }
+        System.out.println("Ship 1 is " + ship1.getState());
+        System.out.println("Ship 2 is " + ship2.getState());
+        System.out.println("Ship 3 is " + ship3.getState());
+
+        System.out.println("Ship 1 has " + ship1.livesLeft(gameBoard) + " lives left");
+        System.out.println("Ship 2 has " + ship2.livesLeft(gameBoard) + " lives left");
+        System.out.println("Ship 3 has " + ship3.livesLeft(gameBoard) + " lives left");
+        showBoard();
+        System.out.println();
     }
 
     /**
@@ -195,15 +205,18 @@ public class Board
         Scanner input = new Scanner(kb.nextLine());
         if (input.hasNextInt()) {
             int guess = input.nextInt();
-            if (guess < min || guess >= max) {
-                System.out.println("Please guess between 0 and " + boardSize + "!");
+            if (guess < min || guess >= max) 
+            {
+                System.out.println("Please guess between 0 and " + (boardSize - 1) + "!");
                 input.close(); //this is unnecessary but technically saves memory. you can get rid of these .close() if you want
                 return getGuess(min, max);
-            } else {
+            } 
+            else 
+            {
                 return guess;
             }
         }
-        System.out.println("Please guess between 0 and " + boardSize + "!");
+        System.out.println("Please guess between 0 and " + (boardSize - 1) + "!");
         input.close();
         return getGuess(min, max);
     }
@@ -213,16 +226,7 @@ public class Board
         shipsToArray();
         while(!boardIsClear())
         {
-            showBoard();
             shoot();
-            System.out.println();
-            System.out.println("Ship 1 is " + ship1.getState());
-            System.out.println("Ship 2 is " + ship2.getState());
-            System.out.println("Ship 3 is " + ship3.getState());
-
-            System.out.println("Ship 1 has " + ship1.livesLeft(gameBoard) + " lives left");
-            System.out.println("Ship 2 has " + ship2.livesLeft(gameBoard) + " lives left");
-            System.out.println("Ship 3 has " + ship3.livesLeft(gameBoard) + " lives left");
         }
         showBoard();
         if(ship1.getAlive())
@@ -242,7 +246,7 @@ public class Board
         return;
     }
 
-    private void printCopyPasta() {
+    public void printCopyPasta() {
         System.out.println("Life is like a cabbage: Sometimes it is green and crunchy, sometimes dad stabs the cat with a knife because his foot ball team lose again");
         System.out.println("Life is like a cabbage: sometimes it is green and round, and sometimes mom wish you were never born");
         System.out.println("If you throw a cabbage in the air he will alway come right back down to you because he is lonely without you.");

@@ -1,6 +1,3 @@
-/**
- * Created by liamkreiss on 11/28/17.
- */
 public class Guess {
     private int row, col, id;
 
