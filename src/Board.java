@@ -54,16 +54,6 @@ a subclass of Player
         guesses = new HashSet<Guess>();
     }
 
-    public String[][] getBoardView()
-    {
-        return boardView;
-    }
-
-    public int[][] getGameBoard()
-    {
-        return gameBoard;
-    }
-
     public void shipsToArray()
     {
         if(ship1.getUpDown())
@@ -180,9 +170,9 @@ a subclass of Player
                 System.out.println("Miss!");
                 boardView[guessx][guessy] = "O";
             }
-            ship1.isAlive(gameBoard);
-            ship2.isAlive(gameBoard);
-            ship3.isAlive(gameBoard);
+            ship1.updateAlive(gameBoard);
+            ship2.updateAlive(gameBoard);
+            ship3.updateAlive(gameBoard);
         }
         System.out.println("Ship 1 is " + ship1.getState());
         System.out.println("Ship 2 is " + ship2.getState());

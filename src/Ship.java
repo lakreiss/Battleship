@@ -83,28 +83,9 @@ public class Ship
         return count;
     }
 
-    public void isAlive(int[][] board)
+    public void updateAlive(int[][] board)
     {
-        int count = 0;
-        if(upDown == true)
-        {
-            if(board[posx][posy] == 1)
-                count++;
-            if(board[posx][pos2] == 1)
-                count++;
-            if(board[posx][pos3] == 1)
-                count++;
-        }
-        else
-        {
-            if(board[posx][posy] == 1)
-                count++;
-            if(board[pos2][posy] == 1)
-                count++;
-            if(board[pos3][posy] == 1)
-                count++;
-        }
-        if(count == 0)
+        if(livesLeft(board) == 0)
             alive = false;
     }
 
