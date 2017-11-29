@@ -5,7 +5,7 @@ public class Tester
     public static void main(String[] args)
     {
         Player player1 = new Player(7);
-        Player player2 = new Player(7);
+        Player player2 = new Computer(7);
 
         while(!(player1.getBoard().boardIsClear()) && !(player2.getBoard().boardIsClear()))
         {
