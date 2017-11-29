@@ -145,12 +145,14 @@ a subclass of Player
         System.out.println("PEW!");
         if(gameBoard[guess.getRow()][guess.getCol()] == 1)
         {
+            guess.setHit(true);
             System.out.println("Hit!");
             gameBoard[guess.getRow()][guess.getCol()] = gameBoard[guess.getRow()][guess.getCol()] - 1;
             boardView[guess.getRow()][guess.getCol()] = "X";
         }
         else
         {
+            guess.setHit(false);
             System.out.println("Miss!");
             boardView[guess.getRow()][guess.getCol()] = "O";
         }

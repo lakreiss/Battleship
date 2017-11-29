@@ -1,5 +1,6 @@
 public class Guess {
     private int row, col, id;
+    private boolean hit;
 
     public Guess(int row, int col, int boardSize) {
         this.row = row;
@@ -20,6 +21,14 @@ public class Guess {
 
     public int getCol() {
         return this.col;
+    }
+
+    public void setHit(boolean hit) {
+        this.hit = hit;
+    }
+
+    public boolean isHit() {
+        return this.hit;
     }
 
     public int hashCode() {
