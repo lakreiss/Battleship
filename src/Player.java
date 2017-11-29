@@ -4,9 +4,9 @@ import java.util.Scanner;
 public class Player
 {
     public Board board;
-    private int boardSize;
+    protected int boardSize;
     Scanner kb;
-    private HashSet<Guess> guesses;
+    protected HashSet<Guess> guesses;
 
 
     public Player(int boardSize)
