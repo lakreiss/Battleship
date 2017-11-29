@@ -2,18 +2,15 @@ public class Tester
 {
     public static void main(String[] args)
     {
-        Board myBoard = new Board(7);
-        // myBoard.clearBoard();
-
         Player player1 = new Player(7);
         Player player2 = new Player(7);
 
         while(!(player1.board.boardIsClear()) || !(player2.board.boardIsClear()))
         {
             System.out.println("It is player 1's turn!!");
-            player1.board.shoot();
+            player1.shoot();
             System.out.println("It is player 2's turn!!");
-            player2.board.shoot();
+            player2.shoot();
         }
         player1.board.showBoard();
         if(player1.board.ship1.getAlive())
@@ -42,7 +39,7 @@ public class Tester
         else
             System.out.println("Player 2 Ship 3 is sunk");
         System.out.println("Good game!");
-        myBoard.printCopyPasta();
 
+        player1.board.printCopyPasta();
     }
 }

@@ -14,6 +14,14 @@ public class Guess {
         return false;
     }
 
+    public int getRow() {
+        return this.row;
+    }
+
+    public int getCol() {
+        return this.col;
+    }
+
     public int hashCode() {
         return id;
     }

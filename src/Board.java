@@ -25,12 +25,10 @@ a subclass of Player
     private String[][] boardView;
     private int[][] gameBoard;
     private int boardSize;
-    private HashSet<Guess> guesses;
 
     Ship ship1;
     Ship ship2;
     Ship ship3;
-    Scanner kb = new Scanner(System.in);
     public Board(int boardSize)
     {
         this.boardSize = boardSize;
@@ -51,7 +49,6 @@ a subclass of Player
                 gameBoard[i][j] = 0;
         }
 
-        guesses = new HashSet<Guess>();
     }
 
     public void shipsToArray()
@@ -142,38 +139,26 @@ a subclass of Player
         return true;
     }
 
-    public void shoot()
+    public void shoot(Guess guess)
     {
-        showBoard();
-        System.out.print("Enter your row guess 0 to " + (boardSize - 1) + ": ");
-        int guessx = getGuess(0, boardSize);
-        System.out.print("Enter your column guess 0 to " + (boardSize - 1) + ": ");
-        int guessy = getGuess(0, boardSize);
 
-        Guess guess = new Guess(guessx, guessy, boardSize);
-        if (guesses.contains(guess)) {
-            System.out.println("You've already guessed that index. Please try again.");
-            shoot();
-        } 
-        else 
+        System.out.println("PEW!");
+        if(gameBoard[guess.getRow()][guess.getCol()] == 1)
         {
-            guesses.add(guess);
-            System.out.println("PEW!");
-            if(gameBoard[guessx][guessy] == 1)
-            {
-                System.out.println("Hit!");
-                gameBoard[guessx][guessy] = gameBoard[guessx][guessy] - 1;
-                boardView[guessx][guessy] = "X";
-            }
-            else
-            {
-                System.out.println("Miss!");
-                boardView[guessx][guessy] = "O";
-            }
-            ship1.updateAlive(gameBoard);
-            ship2.updateAlive(gameBoard);
-            ship3.updateAlive(gameBoard);
+            System.out.println("Hit!");
+            gameBoard[guess.getRow()][guess.getCol()] = gameBoard[guess.getRow()][guess.getCol()] - 1;
+            boardView[guess.getRow()][guess.getCol()] = "X";
         }
+        else
+        {
+            System.out.println("Miss!");
+            boardView[guess.getRow()][guess.getCol()] = "O";
+        }
+        ship1.updateAlive(gameBoard);
+        ship2.updateAlive(gameBoard);
+        ship3.updateAlive(gameBoard);
+
+
         System.out.println("Ship 1 is " + ship1.getState());
         System.out.println("Ship 2 is " + ship2.getState());
         System.out.println("Ship 3 is " + ship3.getState());
@@ -183,57 +168,6 @@ a subclass of Player
         System.out.println("Ship 3 has " + ship3.livesLeft(gameBoard) + " lives left");
         showBoard();
         System.out.println();
-    }
-
-    /**
-     * min is inclusive, max is exclusive
-     * @param min
-     * @param max
-     * @return
-     */
-    private int getGuess(int min, int max) {
-        Scanner input = new Scanner(kb.nextLine());
-        if (input.hasNextInt()) {
-            int guess = input.nextInt();
-            if (guess < min || guess >= max) 
-            {
-                System.out.println("Please guess between 0 and " + (boardSize - 1) + "!");
-                input.close(); //this is unnecessary but technically saves memory. you can get rid of these .close() if you want
-                return getGuess(min, max);
-            } 
-            else 
-            {
-                return guess;
-            }
-        }
-        System.out.println("Please guess between 0 and " + (boardSize - 1) + "!");
-        input.close();
-        return getGuess(min, max);
-    }
-
-    public void clearBoard()
-    {
-        shipsToArray();
-        while(!boardIsClear())
-        {
-            shoot();
-        }
-        showBoard();
-        if(ship1.getAlive())
-            System.out.println("Ship 1 is alive");
-        else
-            System.out.println("Ship 1 is sunk");
-        if(ship2.getAlive())
-            System.out.println("Ship 2 is alive");
-        else
-            System.out.println("Ship 2 is sunk");
-        if(ship3.getAlive())
-            System.out.println("Ship 3 is alive");
-        else
-            System.out.println("Ship 3 is sunk");
-        System.out.println("Good game!");
-        printCopyPasta();
-        return;
     }
 
     public void printCopyPasta() {
