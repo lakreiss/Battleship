@@ -1,3 +1,5 @@
+
+import java.util.*;
 public class Tester
 {
     public static void main(String[] args)
@@ -9,8 +11,22 @@ public class Tester
         {
             System.out.println("It is player 1's turn!!");
             player1.shoot();
+            try{
+                Thread.sleep(1500);
+            }
+            catch(InterruptedException ex)
+            {
+                Thread.currentThread().interrupt();
+            }
             System.out.println("It is player 2's turn!!");
             player2.shoot();
+            try{
+                Thread.sleep(1500);
+            }
+            catch(InterruptedException ex)
+            {
+                Thread.currentThread().interrupt();
+            }
         }
         player1.board.showBoard();
         if(player1.board.ship1.getAlive())
