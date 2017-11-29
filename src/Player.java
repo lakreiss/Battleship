@@ -3,9 +3,9 @@ import java.util.Scanner;
 
 public class Player
 {
-    public Board board;
+    protected Board board;
     protected int boardSize;
-    Scanner kb;
+    protected Scanner kb;
     protected HashSet<Guess> guesses;
 
 
@@ -63,6 +63,10 @@ public class Player
         System.out.println("Please guess between 0 and " + (boardSize - 1) + "!");
         input.close();
         return getGuess(min, max);
+    }
+
+    public Board getBoard() {
+        return this.board;
     }
     
 }

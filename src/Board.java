@@ -11,7 +11,7 @@ it makes sense when you look at the code. it's the method called "getGuess"
 - added a global static variable which describes the size of the board. Size is a pretty standard thing
 to use as a field (global variable), and that way if you ever want to make the board bigger or smaller,
 you just have to change one line instead of a bunch of lines
--renamed your second ship to ship2 because I don't know why it used to just be called 'ship'
+-renamed your second ship to ships[1] because I don't know why it used to just be called 'ship'
 Other things that would be good to change:
 -make sure ships don't overlap
 -allow for different sized ships, and different numbers of ships
@@ -25,16 +25,14 @@ a subclass of Player
     private String[][] boardView;
     private int[][] gameBoard;
     private int boardSize;
-
-    Ship ship1;
-    Ship ship2;
-    Ship ship3;
+    private Ship[] ships;
     public Board(int boardSize)
     {
         this.boardSize = boardSize;
-        this.ship1 = new Ship(boardSize);
-        this.ship2 = new Ship(boardSize);
-        this.ship3 = new Ship(boardSize);
+        this.ships = new Ship[]{
+                new Ship(boardSize), new Ship(boardSize), new Ship(boardSize)
+        };
+
         // initialise instance variables
         boardView = new String[boardSize][boardSize];
         for(int i = 0; i < boardSize; i++)
@@ -53,41 +51,41 @@ a subclass of Player
 
     public void shipsToArray()
     {
-        if(ship1.getUpDown())
+        if(ships[0].getUpDown())
         {
-            gameBoard[ship1.getPosx()][ship1.getPosy()] = 1; 
-            gameBoard[ship1.getPosx()][ship1.getPos2()] = 1; 
-            gameBoard[ship1.getPosx()][ship1.getPos3()] = 1;
+            gameBoard[ships[0].getPosx()][ships[0].getPosy()] = 1; 
+            gameBoard[ships[0].getPosx()][ships[0].getPos2()] = 1; 
+            gameBoard[ships[0].getPosx()][ships[0].getPos3()] = 1;
         }
         else
         {
-            gameBoard[ship1.getPosx()][ship1.getPosy()] = 1; 
-            gameBoard[ship1.getPos2()][ship1.getPosy()] = 1; 
-            gameBoard[ship1.getPos3()][ship1.getPosy()] = 1;
+            gameBoard[ships[0].getPosx()][ships[0].getPosy()] = 1; 
+            gameBoard[ships[0].getPos2()][ships[0].getPosy()] = 1; 
+            gameBoard[ships[0].getPos3()][ships[0].getPosy()] = 1;
         }
-        if(ship2.getUpDown())
+        if(ships[1].getUpDown())
         {
-            gameBoard[ship2.getPosx()][ship2.getPosy()] = 1;
-            gameBoard[ship2.getPosx()][ship2.getPos2()] = 1;
-            gameBoard[ship2.getPosx()][ship2.getPos3()] = 1;
-        }
-        else
-        {
-            gameBoard[ship2.getPosx()][ship2.getPosy()] = 1;
-            gameBoard[ship2.getPos2()][ship2.getPosy()] = 1;
-            gameBoard[ship2.getPos3()][ship2.getPosy()] = 1;
-        }
-        if(ship3.getUpDown())
-        {
-            gameBoard[ship3.getPosx()][ship3.getPosy()] = 1; 
-            gameBoard[ship3.getPosx()][ship3.getPos2()] = 1; 
-            gameBoard[ship3.getPosx()][ship3.getPos3()] = 1;
+            gameBoard[ships[1].getPosx()][ships[1].getPosy()] = 1;
+            gameBoard[ships[1].getPosx()][ships[1].getPos2()] = 1;
+            gameBoard[ships[1].getPosx()][ships[1].getPos3()] = 1;
         }
         else
         {
-            gameBoard[ship3.getPosx()][ship3.getPosy()] = 1; 
-            gameBoard[ship3.getPos2()][ship3.getPosy()] = 1; 
-            gameBoard[ship3.getPos3()][ship3.getPosy()] = 1;
+            gameBoard[ships[1].getPosx()][ships[1].getPosy()] = 1;
+            gameBoard[ships[1].getPos2()][ships[1].getPosy()] = 1;
+            gameBoard[ships[1].getPos3()][ships[1].getPosy()] = 1;
+        }
+        if(ships[2].getUpDown())
+        {
+            gameBoard[ships[2].getPosx()][ships[2].getPosy()] = 1; 
+            gameBoard[ships[2].getPosx()][ships[2].getPos2()] = 1; 
+            gameBoard[ships[2].getPosx()][ships[2].getPos3()] = 1;
+        }
+        else
+        {
+            gameBoard[ships[2].getPosx()][ships[2].getPosy()] = 1; 
+            gameBoard[ships[2].getPos2()][ships[2].getPosy()] = 1; 
+            gameBoard[ships[2].getPos3()][ships[2].getPosy()] = 1;
         }
     }
 
@@ -156,18 +154,18 @@ a subclass of Player
             System.out.println("Miss!");
             boardView[guess.getRow()][guess.getCol()] = "O";
         }
-        ship1.updateAlive(gameBoard);
-        ship2.updateAlive(gameBoard);
-        ship3.updateAlive(gameBoard);
+        ships[0].updateAlive(gameBoard);
+        ships[1].updateAlive(gameBoard);
+        ships[2].updateAlive(gameBoard);
 
 
-        System.out.println("Ship 1 is " + ship1.getState());
-        System.out.println("Ship 2 is " + ship2.getState());
-        System.out.println("Ship 3 is " + ship3.getState());
+        System.out.println("Ship 1 is " + ships[0].getState());
+        System.out.println("Ship 2 is " + ships[1].getState());
+        System.out.println("Ship 3 is " + ships[2].getState());
 
-        System.out.println("Ship 1 has " + ship1.livesLeft(gameBoard) + " lives left");
-        System.out.println("Ship 2 has " + ship2.livesLeft(gameBoard) + " lives left");
-        System.out.println("Ship 3 has " + ship3.livesLeft(gameBoard) + " lives left");
+        System.out.println("Ship 1 has " + ships[0].livesLeft(gameBoard) + " lives left");
+        System.out.println("Ship 2 has " + ships[1].livesLeft(gameBoard) + " lives left");
+        System.out.println("Ship 3 has " + ships[2].livesLeft(gameBoard) + " lives left");
         showBoard();
         System.out.println();
     }
@@ -196,5 +194,9 @@ a subclass of Player
         System.out.println("You can put a cabbage in a baby carriage amd take him for a walk and people will say who this and you can say he is my cabbaby");
         System.out.println("If you want to trick your parents put a cabbage on your pillow at night and they will think you are sleeping but you are actually crying");
         System.out.println("Good game!");
+    }
+
+    public Ship[] getShips() {
+        return this.ships;
     }
 }

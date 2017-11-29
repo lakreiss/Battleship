@@ -7,7 +7,7 @@ public class Tester
         Player player1 = new Player(7);
         Player player2 = new Player(7);
 
-        while(!(player1.board.boardIsClear()) && !(player2.board.boardIsClear()))
+        while(!(player1.getBoard().boardIsClear()) && !(player2.getBoard().boardIsClear()))
         {
             System.out.println("It is player 1's turn!!");
             player1.shoot();
@@ -28,34 +28,19 @@ public class Tester
                 Thread.currentThread().interrupt();
             }
         }
-        player1.board.showBoard();
-        if(player1.board.ship1.getAlive())
-            System.out.println("Player 1 Ship 1 is alive");
-        else
-            System.out.println("Player 1 Ship 1 is sunk");
-        if(player1.board.ship2.getAlive())
-            System.out.println("Player 1 Ship 2 is alive");
-        else
-            System.out.println("Player 1 Ship 2 is sunk");
-        if(player1.board.ship3.getAlive())
-            System.out.println("Player 1 Ship 3 is alive");
-        else
-            System.out.println("Player 1 Ship 3 is sunk");
-        player2.board.showBoard();
-        if(player1.board.ship1.getAlive())
-            System.out.println("Player 2 Ship 1 is alive");
-        else
-            System.out.println("Player 2 Ship 1 is sunk");
-        if(player1.board.ship2.getAlive())
-            System.out.println("Player 2 Ship 2 is alive");
-        else
-            System.out.println("Player 2 Ship 2 is sunk");
-        if(player1.board.ship3.getAlive())
-            System.out.println("Player 2 Ship 3 is alive");
-        else
-            System.out.println("Player 2 Ship 3 is sunk");
+
+        player1.getBoard().showBoard();
+
+        for (int i = 0; i < player1.getBoard().getShips().length; i++) {
+            System.out.println("Player 1 Ship " + (i + 1) + " is " + player1.getBoard().getShips()[i].getState());
+        }
+
+        player2.getBoard().showBoard();
+        for (int i = 0; i < player2.getBoard().getShips().length; i++) {
+            System.out.println("Player 2 Ship " + (i + 1) + " is " + player2.getBoard().getShips()[i].getState());
+        }
         System.out.println("Good game!");
 
-        player1.board.printCopyPasta();
+        player1.getBoard().printCopyPasta();
     }
 }
