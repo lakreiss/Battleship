@@ -28,18 +28,35 @@ public class Computer extends Player{
 
         //MaxPQ is initialized with an initCapacity and a comparator
         guessOrder = new MaxPQ<>(boardSize * boardSize, new SortByProbability());
-        guessOrder.insert(new Guess(1, 2, 7));
+        for (int row = 0; row < boardSize; row++) {
+            for (int col = 0; col < boardSize; col++) {
+
+                if (row % 3 == col % 3) {       //this optimizes guesses because boats have length = 3
+                    guessOrder.insert(new Guess(row, col, boardSize));
+                }
+            }
+        }
     }
 
     public void shoot() {
         if (lastGuess != null) {
             for (Guess g : lastGuess.getNeighbors(board, allGuesses)) {
-                System.out.println(g.toString());
+                if (!lastGuess.sunkShip()) {
+                    if (lastGuess.isHit()) {
+                        g.updateProbabilityOfHit(.2);
+                        guessOrder.insert(g);
+                    }
+                }
             }
         }
         nextGuess = guessOrder.delMax();
+        while (allGuesses.contains(nextGuess)) {
+            nextGuess = guessOrder.delMax();
+        }
         allGuesses.add(nextGuess);
         lastGuess = nextGuess;
+        System.out.println(nextGuess);
+        board.shoot(nextGuess);
     }
 
     class SortByProbability implements Comparator<Guess>

@@ -34,6 +34,7 @@ public class Player
             System.out.println("You've already guessed that index. Please try again.");
             shoot();
         } else {
+            guesses.add(guess);
             board.shoot(guess);
         }
     }

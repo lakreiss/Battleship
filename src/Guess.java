@@ -28,7 +28,7 @@ public class Guess {
                 //max is (boardSize / 2), min is 0
                 + ((boardSize / 2) - Math.abs((boardSize / 2) - col)))
 
-                / (5 * boardSize);
+                * 1.0 / (5 * boardSize);
     }
 
     public boolean equals(Object o) {
@@ -80,8 +80,8 @@ public class Guess {
         return this.probabilityOfHit;
     }
 
-    public void updateProbabilityOfHit() {
-        //TODO
+    public void updateProbabilityOfHit(double probabilityToAdd) {
+        this.probabilityOfHit += probabilityToAdd;
     }
 
     public ArrayList<Guess> getNeighbors(Board b, HashSet<Guess> allGuesses) {
@@ -119,6 +119,7 @@ public class Guess {
     }
 
     public String toString() {
-        return "row: " + row + " col: " + col + " hit: " + hit + " sunk: " + sunk;
+//        return "row: " + row + " col: " + col + " hit: " + hit + " sunk: " + sunk + " hit prob: " + probabilityOfHit;
+        return "row: " + row + " col: " + col + " hit prob: " + probabilityOfHit;
     }
 }
