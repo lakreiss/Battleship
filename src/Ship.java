@@ -4,9 +4,11 @@ public class Ship
     private int posx, pos2, pos3, posy;
     private boolean alive;
     private boolean upDown; //if true, ship is up & down on board; false = left * right
+    private int shipNumber;
 
-    public Ship(int boardSize)
+    public Ship(int boardSize, int shipNumber)
     {
+        this.shipNumber = shipNumber;
         //This strategy allows overlap of ships, which I don't think you want - Liam
         // initialise instance variables
         int leftRight = ((int)(Math.random() * (2))); //determines if the ship faces up and down or left and right
@@ -121,5 +123,9 @@ public class Ship
             return "alive";
         }
         return "sunk";
+    }
+
+    public String toString() {
+        return "Ship " + shipNumber;
     }
 }

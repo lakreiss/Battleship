@@ -26,12 +26,15 @@ a subclass of Player
     private int[][] gameBoard;
     private int boardSize;
     private Ship[] ships;
+    private static final int NUM_SHIPS = 3;
+
     public Board(int boardSize)
     {
         this.boardSize = boardSize;
-        this.ships = new Ship[]{
-                new Ship(boardSize), new Ship(boardSize), new Ship(boardSize)
-        };
+        this.ships = new Ship[NUM_SHIPS];
+        for (int i = 0; i < NUM_SHIPS; i++) {
+            ships[i] = new Ship(boardSize, i + 1);
+        }
 
         // initialise instance variables
         boardView = new String[boardSize][boardSize];
@@ -154,26 +157,24 @@ a subclass of Player
             System.out.println("Miss!");
             boardView[guess.getRow()][guess.getCol()] = "O";
         }
-        boolean sunk1 = ships[0].updateAliveReturnSunk(gameBoard);
-        boolean sunk2 = ships[1].updateAliveReturnSunk(gameBoard);
-        boolean sunk3 = ships[2].updateAliveReturnSunk(gameBoard);
 
-        if (sunk1 || sunk2 || sunk3) {
-            guess.setSunk(true);
+        for (int i = 0; i < ships.length; i++) {
+            if (ships[i].updateAliveReturnSunk(gameBoard)) {
+                guess.setSunk(true);
+            }
         }
 
-        System.out.println("Ship 1 is " + ships[0].getState());
-        System.out.println("Ship 2 is " + ships[1].getState());
-        System.out.println("Ship 3 is " + ships[2].getState());
-
+        for (Ship s : ships) {
+            System.out.println(s.toString() + " is " + s.getState());
+        }
 
         /* TODO
         To make this faster and more efficient, each ship could have a field
         which tells how many lives a ship has left
          */
-        System.out.println("Ship 1 has " + ships[0].livesLeft(gameBoard) + " lives left");
-        System.out.println("Ship 2 has " + ships[1].livesLeft(gameBoard) + " lives left");
-        System.out.println("Ship 3 has " + ships[2].livesLeft(gameBoard) + " lives left");
+        for (Ship s : ships) {
+            System.out.println(s.toString() + " has " + s.livesLeft(gameBoard) + " lives left");
+        }
         showBoard();
         System.out.println();
     }
