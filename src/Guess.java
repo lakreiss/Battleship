@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashSet;
 
 public class Guess {
@@ -61,16 +60,6 @@ public class Guess {
     public boolean sunkShip() {
         return this.sunk;
     }
-
-//    public int compare(Guess g1, Guess g2) {
-//        if (g1.getProbabilityOfHit() - g2.getProbabilityOfHit() > 0) {
-//            return 1;
-//        } else if (g1.getProbabilityOfHit() - g2.getProbabilityOfHit() < 0) {
-//            return -1;
-//        } else {
-//            return 0;
-//        }
-//    }
 
     public int hashCode() {
         return row * boardSize + col;
