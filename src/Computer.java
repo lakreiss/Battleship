@@ -43,7 +43,7 @@ public class Computer extends Player{
             for (Guess g : lastGuess.getNeighbors(board, allGuesses)) {
                 if (!lastGuess.sunkShip()) {
                     if (lastGuess.isHit()) {
-                        g.updateProbabilityOfHit(.2);
+                        g.updateProbabilityOfHit(.2 + (Math.random() / 100));
                         guessOrder.insert(g);
                     }
                 }
