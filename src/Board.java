@@ -154,15 +154,23 @@ a subclass of Player
             System.out.println("Miss!");
             boardView[guess.getRow()][guess.getCol()] = "O";
         }
-        ships[0].updateAlive(gameBoard);
-        ships[1].updateAlive(gameBoard);
-        ships[2].updateAlive(gameBoard);
+        boolean sunk1 = ships[0].updateAliveReturnSunk(gameBoard);
+        boolean sunk2 = ships[1].updateAliveReturnSunk(gameBoard);
+        boolean sunk3 = ships[2].updateAliveReturnSunk(gameBoard);
 
+        if (sunk1 || sunk2 || sunk3) {
+            guess.setSunk(true);
+        }
 
         System.out.println("Ship 1 is " + ships[0].getState());
         System.out.println("Ship 2 is " + ships[1].getState());
         System.out.println("Ship 3 is " + ships[2].getState());
 
+
+        /* TODO
+        To make this faster and more efficient, each ship could have a field
+        which tells how many lives a ship has left
+         */
         System.out.println("Ship 1 has " + ships[0].livesLeft(gameBoard) + " lives left");
         System.out.println("Ship 2 has " + ships[1].livesLeft(gameBoard) + " lives left");
         System.out.println("Ship 3 has " + ships[2].livesLeft(gameBoard) + " lives left");

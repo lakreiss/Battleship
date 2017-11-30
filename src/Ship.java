@@ -83,10 +83,18 @@ public class Ship
         return count;
     }
 
-    public void updateAlive(int[][] board)
+    public boolean updateAliveReturnSunk(int[][] board)
     {
-        if(livesLeft(board) == 0)
-            alive = false;
+        if (!alive) {
+            return false;
+        } else {
+            if (livesLeft(board) == 0) {
+                alive = false;
+                return true;
+            } else {
+                return false;
+            }
+        }
     }
 
     //you never call this method

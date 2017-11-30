@@ -1,14 +1,17 @@
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashSet;
 
 public class Guess {
-    private int row, col, id;
+    private int row, col, boardSize;
     private double probabilityOfHit;
-    private boolean hit;
+    private boolean hit, sunk;
 
     public Guess(int row, int col, int boardSize) {
         this.row = row;
         this.col = col;
-        this.id = row * boardSize + col;
+        this.boardSize = boardSize;
+        this.sunk = false;
 
         this.probabilityOfHit =
 
@@ -51,6 +54,14 @@ public class Guess {
         return this.hit;
     }
 
+    public void setSunk(boolean sunk) {
+        this.sunk = sunk;
+    }
+
+    public boolean sunkShip() {
+        return this.sunk;
+    }
+
 //    public int compare(Guess g1, Guess g2) {
 //        if (g1.getProbabilityOfHit() - g2.getProbabilityOfHit() > 0) {
 //            return 1;
@@ -62,7 +73,7 @@ public class Guess {
 //    }
 
     public int hashCode() {
-        return id;
+        return row * boardSize + col;
     }
 
     public double getProbabilityOfHit() {
@@ -73,4 +84,41 @@ public class Guess {
         //TODO
     }
 
+    public ArrayList<Guess> getNeighbors(Board b, HashSet<Guess> allGuesses) {
+        ArrayList<Guess> neighbors = new ArrayList<>();
+
+        if (row != boardSize - 1) {
+            Guess below = new Guess(row + 1, col, boardSize);
+            if (!allGuesses.contains(below)) {
+                neighbors.add(below);
+            }
+        }
+
+        if (row != 0) {
+            Guess above = new Guess(row - 1, col, boardSize);
+            if (!allGuesses.contains(above)) {
+                neighbors.add(above);
+            }
+        }
+
+        if (col != boardSize - 1){
+            Guess right = new Guess(row, col + 1, boardSize);
+            if (!allGuesses.contains(right)) {
+                neighbors.add(right);
+            }
+        }
+
+        if (col != 0){
+            Guess left = new Guess(row, col - 1, boardSize);
+            if (!allGuesses.contains(left)) {
+                neighbors.add(left);
+            }
+        }
+
+        return neighbors;
+    }
+
+    public String toString() {
+        return "row: " + row + " col: " + col + " hit: " + hit + " sunk: " + sunk;
+    }
 }

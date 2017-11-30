@@ -6,9 +6,13 @@ import java.util.HashSet;
 /**
  * Created by liamkreiss on 11/28/17.
  */
+
+/**
+ * could make another guess constructor with an intArray passed in which gives weights to different guess criterion
+ */
 public class Computer extends Player{
     private HashSet<Guess> allGuesses;
-    private Guess lastHit;
+    private Guess lastGuess, nextGuess;
     private boolean triedUp, triedDown, triedLeft, triedRight;
 
     //The MaxPQ Object was built by Robert Sedgewick and Kevin Wayne
@@ -19,7 +23,8 @@ public class Computer extends Player{
     public Computer(int boardSize) {
         super(boardSize);
         allGuesses = new HashSet<>();
-        lastHit = null;
+        lastGuess = null;
+        nextGuess = null;
 
         //MaxPQ is initialized with an initCapacity and a comparator
         guessOrder = new MaxPQ<>(boardSize * boardSize, new SortByProbability());
@@ -27,7 +32,14 @@ public class Computer extends Player{
     }
 
     public void shoot() {
-
+        if (lastGuess != null) {
+            for (Guess g : lastGuess.getNeighbors(board, allGuesses)) {
+                System.out.println(g.toString());
+            }
+        }
+        nextGuess = guessOrder.delMax();
+        allGuesses.add(nextGuess);
+        lastGuess = nextGuess;
     }
 
     class SortByProbability implements Comparator<Guess>
